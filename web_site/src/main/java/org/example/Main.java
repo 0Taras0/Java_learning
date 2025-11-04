@@ -16,14 +16,14 @@ public class Main {
         SpringApplication.run(Main.class, args);
     }
 
-    @Bean
-    CommandLineRunner runner(IUserRepository repository) {
-        return args -> {
-            UserEntity user = new UserEntity();
-            user.setUsername("admin");
-            user.setPassword("");
-            repository.save(user);
-            UserEntity saved = repository.findById(user.getId()).orElseThrow(NoSuchElementException::new);
-        };
-    }
+//    @Bean
+//    CommandLineRunner runner(IUserRepository repository) {
+//        return args -> {
+//            UserEntity user = new UserEntity();
+//            user.setUsername("admin");
+//            user.setPassword("");
+//            repository.save(user);
+//            UserEntity saved = repository.findById(user.getId()).orElseThrow(NoSuchElementException::new);
+//        };
+//    }
 }
