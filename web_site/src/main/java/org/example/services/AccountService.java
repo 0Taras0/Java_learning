@@ -27,9 +27,6 @@ public class AccountService {
     private final IRoleRepository roleRepository;
     private final FileService fileService;
 
-    @Value("${site.url}")
-    private String siteUrl;
-
     public boolean registerUser(RegisterUserDTO dto, HttpServletRequest request) {
         if (userRepository.existsByUsername(dto.getUsername())) {
             return false;

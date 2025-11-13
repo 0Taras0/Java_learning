@@ -1,4 +1,4 @@
-package org.example.data.common;
+package org.example.data.data_transfer_objects.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
