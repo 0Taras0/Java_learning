@@ -8,5 +8,6 @@ public class CountryItemDTO {
     private String name;
     private String code;
     private String slug;
+    private String image;
     private String dateCreated;
 }

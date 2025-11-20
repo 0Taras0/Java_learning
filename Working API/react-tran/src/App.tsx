@@ -1,14 +1,28 @@
 import './App.css'
-import MainHeader from "./layouts/Main/MainHeader.tsx";
+import {Route, Routes} from "react-router";
+import MainLayout from "./layouts/Main/MainLayout.tsx";
+import UserHomePage from "./pages/user/UserHomePage/UserHomePage.tsx";
+import RegisterPage from "./pages/account/RegisterPage/RegisterPage.tsx";
+import NotFoundPage from "./pages/common/NotFoundPage.tsx";
+import CreateCountryPage from "./pages/country/CreateCountryPage/CreateCountryPage.tsx";
 
 function App() {
 
-  return (
-    <>
-        <MainHeader/>
-        <h1>Hello React</h1>
-    </>
-  )
+    return (
+        <>
+            <Routes>
+                <Route path="/" element={<MainLayout />}>
+                    <Route index element={<UserHomePage/>} />
+
+                    <Route path="/countries/create" element={<CreateCountryPage />} />
+
+                    <Route path={"/register"} element={<RegisterPage/>} />
+                </Route>
+
+                <Route path="*" element={<NotFoundPage/>} />
+            </Routes>
+        </>
+    )
 }
 
 export default App
