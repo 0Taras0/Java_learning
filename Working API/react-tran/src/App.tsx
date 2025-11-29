@@ -5,6 +5,7 @@ import UserHomePage from "./pages/user/UserHomePage/UserHomePage.tsx";
 import RegisterPage from "./pages/account/RegisterPage/RegisterPage.tsx";
 import NotFoundPage from "./pages/common/NotFoundPage.tsx";
 import CreateCountryPage from "./pages/country/CreateCountryPage/CreateCountryPage.tsx";
+import CreateCityPage from "./pages/city/CreateCityPage/CreateCityPage.tsx";
 
 function App() {
 
@@ -15,6 +16,10 @@ function App() {
                     <Route index element={<UserHomePage/>} />
 
                     <Route path="/countries/create" element={<CreateCountryPage />} />
+
+                    <Route path="cities">
+                        <Route path="create" element={<CreateCityPage />} />
+                    </Route>
 
                     <Route path={"/register"} element={<RegisterPage/>} />
                 </Route>
