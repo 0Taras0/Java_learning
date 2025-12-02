@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Getter
 @Setter
 public class CityCreateDTO {
@@ -22,16 +24,12 @@ public class CityCreateDTO {
     private Long countryId;
 
     private int population;
-
     private String timezone;
-
     private String description;
-
     private String mainAirportCode;
-
     private double avgMealPrice;
-
     private double avgHotelPrice;
-
     private boolean hasRecreationalWater;
+
+    private List<Long> descriptionImageIds;
 }

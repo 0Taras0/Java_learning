@@ -1,14 +1,12 @@
 package org.example.services;
 
-import io.micrometer.common.lang.Nullable;
-import jakarta.servlet.http.HttpServletRequest;
+
 import lombok.RequiredArgsConstructor;
 import org.example.data.dto.location.CityCreateDTO;
 import org.example.data.dto.location.CityItemDTO;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import org.example.entities.common.ImageEntity;
+import org.example.repositories.IImageRepository;
+
 import org.example.data.mappers.CityMapper;
 import org.example.entities.location.CityEntity;
 import org.example.entities.location.CountryEntity;
@@ -28,9 +26,10 @@ public class CityService {
     private final CityMapper cityMapper;
     private final FileService fileService;
     private final ICountryRepository countryRepository;
+    private final IImageRepository imageRepository;
 
     @Transactional
-    public CityItemDTO create(CityCreateDTO dto, @Nullable HttpServletRequest request) {
+    public CityItemDTO create(CityCreateDTO dto) {
         if (cityRepository.existsBySlug(dto.getSlug())) {
             throw new IllegalArgumentException("Категорія зі slug '" + dto.getSlug() + "' вже існує");
         }
@@ -46,13 +45,16 @@ public class CityService {
             String fileName = fileService.load(dto.getImage());
             entity.setImage(fileName);
         }
+        CityEntity saved = cityRepository.save(entity);
 
-        if (dto.getDescription() != null && !dto.getDescription().isBlank() && request != null) {
-            String processedDescription = processDescriptionImages(dto.getDescription(), request);
-            entity.setDescription(processedDescription);
+        if (dto.getDescriptionImageIds() != null && !dto.getDescriptionImageIds().isEmpty()) {
+            List<ImageEntity> images = imageRepository.findAllById(dto.getDescriptionImageIds());
+            for (ImageEntity img : images) {
+                img.setCity(saved);
+            }
+            imageRepository.saveAll(images);
         }
 
-        CityEntity saved = cityRepository.save(entity);
         return cityMapper.toDto(saved);
     }
 
@@ -63,23 +65,11 @@ public class CityService {
                 .collect(Collectors.toList());
     }
 
-    public String processDescriptionImages(String html, HttpServletRequest request) {
-        Document doc = Jsoup.parseBodyFragment(html);
-        Elements images = doc.select("img");
-
-        String baseUrl = request.getScheme() + "://" + request.getServerName();
-        if (request.getServerPort() != 80 && request.getServerPort() != 443) {
-            baseUrl += ":" + request.getServerPort();
-        }
-
-        for (Element img : images) {
-            String src = img.attr("src");
-            if (src != null && !src.isBlank() && src.startsWith("http")) {
-                String serverFileName = fileService.load(src);
-                img.attr("src", baseUrl + "/uploads/large/" + serverFileName);
-            }
-        }
-
-        return doc.body().html();
+    @Transactional(readOnly = true)
+    public CityItemDTO getBySlug(String slug) {
+        CityEntity city = cityRepository.findBySlug(slug)
+                .orElseThrow(() -> new IllegalArgumentException("Місто зі slug '" + slug + "' не знайдено"));
+        return cityMapper.toDto(city);
     }
+
 }
