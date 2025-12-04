@@ -6,6 +6,8 @@ import RegisterPage from "./pages/account/RegisterPage/RegisterPage.tsx";
 import NotFoundPage from "./pages/common/NotFoundPage.tsx";
 import CreateCountryPage from "./pages/country/CreateCountryPage/CreateCountryPage.tsx";
 import CreateCityPage from "./pages/city/CreateCityPage/CreateCityPage.tsx";
+import CitiesListPage from "./pages/city/CitiesListPage/CitiesListPage.tsx";
+import CityDetailPage from "./pages/city/CityDetailPage/CityDetailPage.tsx";
 
 function App() {
 
@@ -18,6 +20,8 @@ function App() {
                     <Route path="/countries/create" element={<CreateCountryPage />} />
 
                     <Route path="cities">
+                        <Route index element={<CitiesListPage/>} />
+                        <Route path=":slug" element={<CityDetailPage/>} />
                         <Route path="create" element={<CreateCityPage />} />
                     </Route>
 
