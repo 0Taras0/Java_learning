@@ -71,3 +71,20 @@ export default defineConfig([
   },
 ])
 ```
+
+##Збірка проекту
+```
+docker build -t p22-java-front .
+
+
+docker login
+docker tag p22-java-front:latest novakvova/p22-java-front:latest
+docker push novakvova/p22-java-front:latest
+```
+
+# Run app
+```
+dos2unix java-p22-front.sh
+chmod +x java-p22-front.sh
+./java-p22-front    .sh
+```
